@@ -7,31 +7,26 @@
 #include "main.h"
 #include "Utilities.h"
 #include <fstream>
-
+#include "Resources.h"
 //---------------------------
 
-class Controller
+class Controller // 2) Game
 {
 public:
 	Controller();
 	void run();
-	void input();
-	void logic();
-	void draw();
-	void updateScore(int);
-	void clean();
-	void initText(sf::Text &, std::string &, unsigned int);
+	void input(); //  private?
+	void logic(); // private?
+	void draw(); // private?
+	void updateScore(int); // private?
+	void clean(); // private ?
+	void initText(sf::Text &, std::string &, unsigned int); // private?
 
 private:
 	sf::RenderWindow m_window;
-	sf::Texture m_texture;
-	sf::Texture m_background;
-	sf::Texture m_reset;
-	sf::Texture m_power;
 	sf::Sprite m_sprite;
 	sf::Sprite m_spriteReset;
 	sf::Sprite m_spritePower;
-	sf::Font m_font;
 	sf::Text m_text;
 	Snake m_snake;
 	Fruit m_fruit;
@@ -40,9 +35,11 @@ private:
 	bool m_gameOver = false;
 	int m_score = 0;
 	int m_highScore;
-	std::fstream m_file;
+	std::fstream m_file; // remove?
 	//*****************************************************************
 	//sound in game
 	sf::SoundBuffer m_soundBuffer1;
-	sf::Sound m_gameSound;
+	sf::Sound m_gameSound; // move to Resources.
 };
+
+// предлагаю завести отдельный класс ScoreDataService и сгрузить туда 2 метода по получению и записи скора, а имя файла константой сделать.

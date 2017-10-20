@@ -3,15 +3,25 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
+#include <Windows.h>
+#include "shellapi.h"
+#include "DirectoryHelper.h"
 //---------------------------
+
+void browser(void);
+
+void browser()
+{
+	ShellExecute(NULL, "open", "D:\\ÁÃÓÈÐ\\ÊÏðîã\\Êóðñà÷\\Snake\\x64\\Release\\website\\index.html", NULL, NULL, SW_SHOWNORMAL);
+}
+
 
 Menu::Menu()
 {
-	m_background.loadFromFile("images/snakemain.png");
+	m_background.loadFromFile(DirectoryHelper::GetImage("snakemain"));
 	m_sprite.setTexture(m_background);
-	m_fontSnakeMix.loadFromFile("fonts/Snake Mix.ttf");
-	m_fontEarth2073.loadFromFile("fonts/Earth 2073.ttf");
+	m_fontSnakeMix.loadFromFile(DirectoryHelper::GetFont("Snake Mix"));
+	m_fontEarth2073.loadFromFile(DirectoryHelper::GetFont("Earth 2073"));
 
 	m_text[0].setFont(m_fontSnakeMix);
 	m_text[0].setFillColor(sf::Color(0, 110, 0, 255));
@@ -27,7 +37,7 @@ Menu::Menu()
 		m_text[i].setPosition(50, (HEIGHT / 3) *(i - (i - 1)* 0.5) + (MAX_NUM_OF_ITEMS - i) * 10);
 	}
 
-	m_text[1].setString("New Game");
+	m_text[1].setString("Play");
 	m_text[2].setString("High Score");
 	m_text[3].setString("Help");
 	m_text[4].setString("Exit");
@@ -56,42 +66,9 @@ void Menu::input(sf::RenderWindow & window, int highScore)
 					handleHighScore(window, event, highScore);
 				
 					//button ...HELP...
-				if (m_text[3].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y));
-				
-					//ShellExecute(NULL, "open", Object.c_str(), NULL, NULL, SW_SHOWNORMAL);
-				
-				/*
-				-----need open html file in browser------
-
-				#include <windows.h>
-
-				void main()
-				{  
-					ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
-				}
-				*********************************************************************************
-
-				c++ builder
-
-				#include <ShellApi.hpp>
-				inline void __fastcall SimpleOpenIt(const String& Object)
-				{
-				ShellExecute(NULL, "open", Object.c_str(), NULL, NULL, SW_SHOWNORMAL);
-				}
-
-				const String MyFile = "document.html";
-				const String MyLink = "http://forum.sources.ru";
-
-				void __fastcall TForm1::Button1Click(TObject *Sender)
-				{
-				String FileName = ExtractFilePath(GetModuleName(NULL)) + MyFile;
-				if (FileExists(FileName))
-				SimpleOpenIt(FileName);
-				else
-				SimpleOpenIt(MyLink);
-				}
-
-				*/
+				if (m_text[3].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+						browser();
+					
 				else if (m_text[4].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
 					window.close();
 			}

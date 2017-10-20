@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css?family=Titan+One&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Nosifer');
+@import url('https://fonts.googleapis.com/css?family=Satisfy');
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	background-color: #9DD29C;
+}
+
+header {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #006E00;
+	height: 10vh;
+}
+
+.main {
+	height: 10vh;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 80%;
+}
+
+.menu {
+	width: 40%;
+}
+
+.menu ul {
+	display: flex;
+	justify-content: space-between;
+	list-style: none;
+}
+
+.menu-link {
+	font-size: 20px;
+	text-decoration: none;
+	color: #fff;
+}
+
+.menu-link:hover {
+	color: #E10F17;
+}
+
+.slider1 {
+	height: 70vh;
+}
+
+.slider {
+	display: flex;
+	justify-content: center;
+	align-item: center;
+	padding: 0;
+}
+
+.item {
+	display: flex;
+	justify-content: center;
+	align-item: center;
+	height: 70vh;
+	border: 1px solid #E44334;
+	background-color: silver;
+	flex-basis: 20%;
+	transition: all 0.2s;
+}
+
+.item:hover {
+	flex-basis: 40%;
+}
+
+.item-1 {
+	background: url(img/img1.png) no-repeat center center;
+	background-size: cover;
+}
+
+.item-2 {
+	background: url(img/img2.png) no-repeat center center;
+	background-size: cover;
+}
+
+.item-3 {
+	background: url(img/img3.png) no-repeat center center;
+	background-size: cover;
+}
+
+.item-4 {
+	background: url(img/img4.png) no-repeat center center;
+	background-size: cover;
+}
+
+.text {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: 10vh;
+}
+
+.titles {
+	height: 10vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 80%;
+}
+
+h1 {
+	font-family: 'Titan One', cursive;
+	display: flex;
+	color: #E44334;
+	font-size: 2em;
+}
+
+h4 {
+	font-family: 'Nosifer', cursive;
+	font-weight: 400;
+	color: #E44334;
+	font-size: 1em;
+}
+
+.footer {
+	padding-top: 7px;
+	display: flex;
+	justify-content: center;
+	font-size: 15px;
+	font-family: 'Satisfy', cursive;
+}
+
+.button {
+	background: #fed136;
+	color: #484543;
+	border-radius: 30px;
+	display: block;
+	width: 240px;
+	padding: 20px 0;
+	margin: 0 auto;
+	text-decoration: none;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 18px;
+	margin-top: 50px;
+}
+
+.button:hover {
+	background: #fed136;
+	color: #E44334;
+	border-radius: 30px;
+	display: block;
+	width: 250px;
+	padding: 20px 0;
+	margin: 0 auto;
+	text-decoration: none;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 18px;
+	margin-top: 50px;
+	transition: all 0.2s;
+}

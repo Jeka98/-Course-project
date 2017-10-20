@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Audio.hpp>
-//#include <ShellApi.hpp>
 
 #include "Controller.h"
 #include "Fruit.h"
@@ -9,6 +8,8 @@
 #include <thread>
 #include <sstream>
 #include <string>
+#include <iostream>
+#include "DirectoryHelper.h"
 
 //---------------------------
 
@@ -17,32 +18,30 @@ Controller::Controller()
 	m_window.create(sf::VideoMode(WIDTH, HEIGHT), "Snake", sf::Style::Close);
 	//*****************************************************************
 	//sound in game
-	m_soundBuffer1.loadFromFile("sounds/OldMcDonaldHadAFarm.ogg");
+	m_soundBuffer1.loadFromFile(DirectoryHelper::GetSound("OldMcDonaldHadAFarm"));
 	m_gameSound.setBuffer(m_soundBuffer1);
 	m_gameSound.play();
 	m_gameSound.setLoop(true);
 	//*****************************************************************
-	// Load
-	m_texture.loadFromFile("images/Texture1.png");
-	m_background.loadFromFile("images/Background1.png");
-	m_reset.loadFromFile("images/Reset.png");
-	m_power.loadFromFile("images/Power.png");
-	m_font.loadFromFile("fonts/arial.ttf");
-
 	// Set
-	m_sprite.setTexture(m_background);
-	m_spriteReset.setTexture(m_reset);
-	m_spritePower.setTexture(m_power);
-	m_spriteReset.setPosition(WIDTH / 2.4, 200);
+	m_sprite.setTexture(Resources::Images.Background);
+	m_spriteReset.setTexture(Resources::Images.Reset);
+	m_spritePower.setTexture(Resources::Images.Power); // Resources::Images.Power (1) / ImageResources::Texture (2) 
+	m_spriteReset.setPosition(WIDTH / 2.4, 200); // magic numbers. create constants with meaningful names and use them there
 	m_spritePower.setPosition(WIDTH / 2.4 + 70, 200);
 
 	initText(m_text, std::string(""), 15);
 
-	m_snake = Snake(m_texture);
+	m_snake = Snake(ImageResources::Texture);
 	m_fruit.update(m_snake);
-	m_fruit = Fruit(m_texture, m_fruit.get());
-
-	m_file.open("High Score.txt", std::fstream::in);
+	m_fruit = Fruit(Resources::Images.Texture, m_fruit.get());
+	
+	
+	//Need to solve the problem
+	m_file.open(DirectoryHelper::ResolvePath("High_Score.txt"), std::fstream::in);
+	if (!m_file)
+		throw std::exception("Failed to open file 'High_Score.txt'!");
+	
 	std::string score;
 	m_file >> score;
 	std::string::size_type sz;
@@ -65,6 +64,8 @@ void Controller::run()
 			input();
 			logic();
 		}
+
+		// all staff below move to method finish()
 
 		sf::Text text, text2;
 
@@ -94,6 +95,7 @@ void Controller::run()
 		m_window.draw(m_spritePower);
 		m_window.display();
 
+		// extract method: move this code to method HandleGameOverWindowEvents
 		sf::Event event;
 		while (m_window.waitEvent(event))
 		{
@@ -117,7 +119,6 @@ void Controller::run()
 		}
 	}
 }
-
 
 //---------------------------
 
@@ -174,6 +175,22 @@ void Controller::logic()
 {
 	int status = 1;
 
+	/*
+	2) int deltaX = 0;
+	   int deltaY = 0;
+
+	   switch(...)
+	   {
+		  case Left:
+			deltax = -1;
+			break;
+		
+		...
+	   }
+	   status = m_snake.move(m_fruit, sf::Vector2f((float)PIC_SIZE * deltax, (float)PIC_SIZE * deltay), m_direction);
+	
+	*/
+
 	switch (m_direction)
 	{
 	case LEFT:
@@ -198,7 +215,21 @@ void Controller::logic()
 	else if (status == 1)
 		updateScore(0);
 	else
-		updateScore(10);
+		updateScore(10); // magic numbers
+	/*
+	enum class Collision
+	{
+		TouchedWall,
+		None,
+		TouchedApple
+	}
+
+	int move() -> Collision move()
+	return 1   -> return Collision::TouchedApple
+
+	if (status == 0) --> if (status == Collision::None)
+	
+	*/
 }
 
 //---------------------------
@@ -220,6 +251,7 @@ void Controller::updateScore(int i)
 {
 	m_score += i;
 	std::stringstream _string;
+	
 	_string << "SCORE: " << m_score;
 	std::string newString = _string.str();
 	m_text.setString(newString);
@@ -229,9 +261,9 @@ void Controller::updateScore(int i)
 
 void Controller::clean()
 {
-	m_snake = Snake(m_texture);
+	m_snake = Snake(Resources::Images.Texture);
 	m_fruit.update(m_snake);
-	m_fruit = Fruit(m_texture, m_fruit.get());
+	m_fruit = Fruit(Resources::Images.Texture, m_fruit.get());
 	m_direction = STOP;
 	m_score = 0;
 	m_gameOver = false;
@@ -241,19 +273,9 @@ void Controller::clean()
 
 void Controller::initText(sf::Text & text, std::string & string, unsigned int size)
 {
-	text.setFont(m_font);
+	text.setFont(Resources::Font);
 	text.setString(string);
 	text.setCharacterSize(size);
 }
 
 //---------------------------
-
-int main()
-{
-	srand((unsigned)time(NULL));
-
-	Controller c;
-	c.run();
-
-	return EXIT_SUCCESS;
-}
